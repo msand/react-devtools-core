@@ -10,8 +10,8 @@
 'use strict';
 
 var ws = require('ws');
-var fs = require('fs');
-var path = require('path');
+var {readFileSync} = require('fs');
+var {join} = require('path');
 
 var installGlobalHook = require('../../../backend/installGlobalHook');
 installGlobalHook(window);
@@ -148,9 +148,7 @@ function startServer(port = 8097) {
 
   httpServer.on('request', (req, res) => {
     // Serve a file that immediately sets up the connection.
-    var backendFile = fs.readFileSync(
-      path.join(__dirname, '../build/backend.js')
-    );
+    var backendFile = readFileSync(join(__dirname, 'backend.js'));
     res.end(backendFile + '\n;ReactDevToolsBackend.connectToDevTools();');
   });
 
